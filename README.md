@@ -163,6 +163,7 @@ sui client pay-sui --amounts 200000000 --recipients {YOUR_ADDRESS} --gas-budget 
 * 你的 Sui CLI 钱包拥有的“本币”对象的 ID 为 `0x4130234b30141d0003f0f005c1e28b231dfc8a5653e4641b5e3b88ec4e61a829`；
 * 你的 Sui CLI 钱包拥有的 `MY_COIN` 对象的 ID 为 `0x4f8f7415357f31da4df9e713084d72ef1fb455186824db9df7b5bb5fa42f84d1`；
 * 你想要提供的初始化流动性为 0.1 个网络“本币”和 1 个 `MY_COIN`。
+* “池子”的手续费率为 3/1000。
 
 执行：
 
@@ -176,6 +177,7 @@ sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34
 100000000 \
 0x4f8f7415357f31da4df9e713084d72ef1fb455186824db9df7b5bb5fa42f84d1 \
 1000000000 \
+3 1000 \
 --gas-budget 30000000
 ```
 
