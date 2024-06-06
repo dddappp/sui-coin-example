@@ -220,4 +220,31 @@ sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34
 sui client object 0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052
 ```
 
+注意输出中的 `AdminCap` 对象的 ID。
+这个对象是你创建交易对的时候，合约向你发送（transfer）的一个对象，代表了对这个“池子”管理权限。
+如果你想要更新这个“池子”的费率，你需要用到。
 
+```text
+│               │ │ fields            │ ╭─────────────────┬───────────────────────────────────────────────────────────────────────────────╮                                                                                              │ │
+│               │ │                   │ │ admin_cap       │  0xa52d9f92f0a12f85f1108cc612f214e13e564d51b3b340633a8bac150e7f910c           │                                                                                              │ │
+│               │ │                   │ │ fee_denominator │  1000                                                                         │                                                                                              │ │
+│               │ │                   │ │ fee_numerator   │  3                                                                            │ 
+```
+
+
+## 修改交易对的费率
+
+如果你想要修改“池子”的费率，假设池子的对象 ID 是 `0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052`，
+它的 `AdminCap` 对象的 ID 是 `0xa52d9f92f0a12f85f1108cc612f214e13e564d51b3b340633a8bac150e7f910c`（你需要拥有这个对象），
+你想要将费率修改为 1/1000，可以这样执行命令：
+
+```shell
+sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd \
+--module token_pair_aggregate --function update_fee_rate \
+--type-args '0x2::sui::SUI' \
+0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49::my_coin::MY_COIN \
+--args 0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052 \
+0xa52d9f92f0a12f85f1108cc612f214e13e564d51b3b340633a8bac150e7f910c \
+1 1000 \
+--gas-budget 30000000
+```
