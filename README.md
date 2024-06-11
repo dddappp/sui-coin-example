@@ -235,6 +235,22 @@ sui client object 0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce
 │               │ │                   │ │ fee_numerator   │  3                                                                            │ 
 ```
 
+## 以“本币”兑换 `MY_COIN`
+
+示例命令：
+
+```shell
+sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd --module token_pair_service --function swap_x \
+--type-args '0x2::sui::SUI' \
+0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49::my_coin::MY_COIN \
+--args \
+'0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052' \
+'0x4130234b30141d0003f0f005c1e28b231dfc8a5653e4641b5e3b88ec4e61a829' \
+'"100"' \
+'0x4f8f7415357f31da4df9e713084d72ef1fb455186824db9df7b5bb5fa42f84d1' \
+'"1"' \
+--gas-budget 30000000
+```
 
 ## 修改交易对的费率
 
