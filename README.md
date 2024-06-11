@@ -6,19 +6,21 @@
 * 给自己 mint 一些这种 Coin；
 * 在一个叫做 Flex 的去中心交易所（DEX）中，将这种 Coin 和其他 Coin 组成一个交易对并提供初始的流动性。
 
+
 ## 准备工作
 
-提示：Flex 在 Movement M2 devnet 中发布了他们的测试合约。其中 Exchange 对象的信息如下：
 我们建议，你可以考虑配置 Sui CLI 工具，切换到 Movement M2 devnet，进行下面的测试。
+
+* 安装 [Sui CLI](https://docs.sui.io/build/install)。
+* [配置你的 Sui CLI 工具](https://docs.movementlabs.xyz/developers/sui-developers/using-sui-cli)，
+  这样，如果你是一个 Sui 开发者，你基本不需要改变你的工作流程，就可以将你的应用部署到 Movement 网络上。
+
+提示：Flex 在 Movement M2 devnet 中发布了他们的测试合约。其中 Exchange 对象的信息如下：
 
 ```text
 ObjectType: 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd::exchange::Exchange
 ObjectID: 0x39a5098d25482d8948f9f1eef3f43cc6ec5b39ddc53c6057af3650a06c5539ea
 ```
-
-* 安装 [Sui CLI](https://docs.sui.io/build/install)。
-* [配置你的 Sui CLI 工具](https://docs.movementlabs.xyz/developers/sui-developers/using-sui-cli)，
-  这样，如果你是一个 Sui 开发者，你基本不需要改变你的工作流程，就可以将你的应用部署到 Movement 网络上。
 
 
 ## 修改 Coin 合约以及部署
@@ -143,10 +145,10 @@ sui client gas
 
 记录其中的一个 coin 对象的 ID，后面会用到。
 
-提示：如果返回的对象少于一个，你可以给自己的 Sui CLI 钱包账户转一些 coin，已达到将一个 coin 对象 split 为两个的目的。
-你可以这样执行转账命令（注意将占位符 `{YOUR_ADDRESS}` 和 `{YOUR_COIN_OBJECT_ID}` 替换为你实际的值）：
-
 ---
+
+提示：如果返回的对象少于一个，你可以给自己的 Sui CLI 钱包账户转一些 coin，已达到将一个 coin 对象 split 为两个的目的。
+你可以这样执行转账命令，（注意将占位符 `{YOUR_ADDRESS}` 和 `{YOUR_COIN_OBJECT_ID}` 替换为你实际的值）：
 
 ```shell
 sui client pay-sui --amounts 200000000 --recipients {YOUR_ADDRESS} --gas-budget 10000000 \
@@ -156,7 +158,7 @@ sui client pay-sui --amounts 200000000 --recipients {YOUR_ADDRESS} --gas-budget 
 ---
 
 现在，可以使用下面的命令在 Flex DEX 中创建交易对并初始化流动性了。
-在下面的示例命令中，我们假设了以下几个参数的值（你需要将它们替换为你实际的值）：
+在下面的示例命令中，我们假设了以下几个参数的值（你需要将它们替换为实际的值）：
 
 * Flex DEX 的合约包 ID 为 `0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd`；
 * 你的 Coin 的类型为 `0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49::my_coin::MY_COIN`；
