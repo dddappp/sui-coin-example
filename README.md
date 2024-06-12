@@ -133,6 +133,13 @@ sui client call --package 0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c
 （在上面的示例中是 `0x4f8f7415357f31da4df9e713084d72ef1fb455186824db9df7b5bb5fa42f84d1`），
 后面会用到。
 
+### 查看你拥有哪些 `MY_COIN` 对象
+
+你也可以事后使用下面的命令查看你拥有的 `MY_COIN` 对象：
+
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"suix_getCoins","params":["{YOUR_ADDRESS}","{MY_COIN_PACKAGE_ID}::my_coin::MY_COIN"]}' https://sui.devnet.m2.movementlabs.xyz
+```
 
 ## 在 Flex DEX 中提供交易对并初始化流动性
 
