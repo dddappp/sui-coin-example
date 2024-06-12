@@ -6,6 +6,24 @@
 * 给自己 mint 一些这种 Coin；
 * 在一个叫做 Flex 的去中心交易所（DEX）中，将这种 Coin 和其他 Coin 组成一个交易对并提供初始的流动性。
 
+--------
+
+提示：Flex 在 Movement M2 devnet 中发布了他们的测试合约。其中 Exchange 对象的信息如下：
+
+```text
+ObjectType: 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd::exchange::Exchange
+ObjectID: 0x39a5098d25482d8948f9f1eef3f43cc6ec5b39ddc53c6057af3650a06c5539ea
+```
+
+Flex 在 Sui testnet 中发布的测试合约的信息：
+
+```text
+objectType: 0x1fbb91bd77221cf17450a4378f2d93100cf65725e0099e4da71f62070ce4b729::exchange::Exchange
+objectId: 0xa556bc09e966ab42ddcc98b84bc1d26c00cc6438d8dc61a787cfc696200099e7
+
+PackageId: 0x1fbb91bd77221cf17450a4378f2d93100cf65725e0099e4da71f62070ce4b729
+```
+
 
 ## 准备工作
 
@@ -15,12 +33,6 @@
 * [配置你的 Sui CLI 工具](https://docs.movementlabs.xyz/developers/sui-developers/using-sui-cli)，
   这样，如果你是一个 Sui 开发者，你基本不需要改变你的工作流程，就可以将你的应用部署到 Movement 网络上。
 
-提示：Flex 在 Movement M2 devnet 中发布了他们的测试合约。其中 Exchange 对象的信息如下：
-
-```text
-ObjectType: 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd::exchange::Exchange
-ObjectID: 0x39a5098d25482d8948f9f1eef3f43cc6ec5b39ddc53c6057af3650a06c5539ea
-```
 
 
 ## 修改 Coin 合约以及部署
