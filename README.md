@@ -33,8 +33,16 @@ We suggest that you consider configuring the Sui CLI tool to switch to Movement 
 * [Configure your Sui CLI](https://docs.movementlabs.xyz/developers/sui-developers/using-sui-cli).
   This way, if you are a Sui developer, 
   you basically don't need to change your workflow to deploy your application on the Movement network.
+* Install [Git](https://git-scm.com/downloads).
+
 
 ## Modify Coin Contracts and Deployment
+
+First, clone the example coin repository:
+
+```shell
+git clone https://github.com/dddappp/sui-coin-example.git
+```
 
 Change the Coin-related information in `./sources/my_coin.move` to your liking. The main are as follows:
 
@@ -133,13 +141,14 @@ Record the ID of the created `Coin` object in the output.
 It will be used later.
 
 
-### See which `MY_COIN` objects you own
+### View `MY_COIN` objects you own
 
 You can also view what `MY_COIN` objects you own by using the following command:
 
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"suix_getCoins","params":["{YOUR_ADDRESS}","{MY_COIN_PACKAGE_ID}::my_coin::MY_COIN"]}' https://sui.devnet.m2.movementlabs.xyz
 ```
+
 
 ## Creating token pairs and initializing liquidity in Flex DEX
 
@@ -244,18 +253,17 @@ If it is successful, the output looks similar to the following:
 
 ```
 
-
-
-在上面的示例中，你创建的交易对（也就是所谓的“池子”）的 ID 是 `0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052`。
-你可以使用 Sui CLI 查看这个“池子”的信息：
+In the example above, the ID of the token pair you created (the "pool") is `0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052`.
+You can use the Sui CLI to view information about this pool:
 
 ```shell
 sui client object 0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052
 ```
 
-注意输出中的 `AdminCap` 对象的 ID。
-这个对象是你创建交易对的时候，合约向你发送（transfer）的一个对象，代表了对这个“池子”管理权限。
-如果你想要更新这个“池子”的费率，你需要用到。
+Note the ID of the `AdminCap` object in the output.
+This object is the one that the contract transfers to you when you create a token pair,
+and it represents the administrative permission of the pool.
+You will need it if you want to update the fee rate of the pool.
 
 ```text
 │               │ │ fields            │ ╭─────────────────┬───────────────────────────────────────────────────────────────────────────────╮                                                                                              │ │
@@ -264,9 +272,14 @@ sui client object 0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce
 │               │ │                   │ │ fee_numerator   │  3                                                                            │ 
 ```
 
-## 以“本币”兑换 `MY_COIN`
 
-示例命令：
+## Swap gas coin for `MY_COIN`
+
+Assuming that the object ID of the pool is `0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052`,
+The ID of the gas coin object you own is `0x4130234b30141d0003f0f005c1e28b231dfc8a5653e4641b5e3b88ec4e61a829`.
+The ID of the `MY_COIN` object you are using to receive the amount is `0x4f8f7415357f31da4df9e713084d72ef1fb455186824db9df7b5bb5fa42f84d1`.
+The minimum `MY_COIN` amount you can accept is 0.000000001.
+Execute the following command:
 
 ```shell
 sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd --module token_pair_service --function swap_x \
@@ -281,11 +294,12 @@ sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34
 --gas-budget 30000000
 ```
 
-## 修改交易对的费率
+## Modifying the fee rate of a token pair
 
-如果你想要修改“池子”的费率，假设池子的对象 ID 是 `0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052`，
-它的 `AdminCap` 对象的 ID 是 `0xa52d9f92f0a12f85f1108cc612f214e13e564d51b3b340633a8bac150e7f910c`（你需要拥有这个对象），
-你想要将费率修改为 1/1000，可以这样执行命令：
+If you want to change the fee rate of a pool,
+assume that the object ID of the pool is `0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052`.
+The ID of its `AdminCap` object is `0xa52d9f92f0a12f85f1108cc612f214e13e564d51b3b340633a8bac150e7f910c` (which you need to own).
+You want to change the rate to 1/1000, you can execute the command like this:
 
 ```shell
 sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd \
@@ -297,3 +311,4 @@ sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34
 1 1000 \
 --gas-budget 30000000
 ```
+
