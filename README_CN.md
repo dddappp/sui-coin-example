@@ -1,42 +1,43 @@
 # A Sui Coin Example
 
-English | [中文版](./README_CN.md)
+[English](./README.md) | 中文版
 
-In this example, we will demonstrate:
+在这个例子里，我们将展示：
 
-* Modify a simple Coin contract and deploy it on the Sui network;
-* Mint some of this Coin for yourself;
-* Create a token pair of this Coin with other Coin and provide initial liquidity on a decentralized exchange (DEX) called Flex.
+* 修改一个简单的 Coin 合约，并部署到 Sui 网路；
+* 给自己 mint 一些这种 Coin；
+* 在一个叫做 Flex 的去中心交易所（DEX）中，将这种 Coin 和其他 Coin 组成一个交易对并提供初始的流动性。
 
 --------
 
-Hint: Flex has published their test contract in Movement M2 devnet.
-The information of the Exchange object on it is as follows:
+提示：Flex 在 Movement M2 devnet 中发布了他们的测试合约。其中 Exchange 对象的信息如下：
 
 ```text
 ObjectType: 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd::exchange::Exchange
 ObjectID: 0x39a5098d25482d8948f9f1eef3f43cc6ec5b39ddc53c6057af3650a06c5539ea
 ```
 
-Information about the test contract that Flex published on Sui testnet:
+Flex 在 Sui testnet 中发布的测试合约的信息：
 
 ```text
 objectType: 0x1fbb91bd77221cf17450a4378f2d93100cf65725e0099e4da71f62070ce4b729::exchange::Exchange
 objectId: 0xa556bc09e966ab42ddcc98b84bc1d26c00cc6438d8dc61a787cfc696200099e7
 ```
 
-## Preparation
 
-We suggest that you consider configuring the Sui CLI tool to switch to Movement M2 devnet for the following tests.
+## 准备工作
 
-* Install [Sui CLI](https://docs.sui.io/build/install)。
-* [Configure your Sui CLI](https://docs.movementlabs.xyz/developers/sui-developers/using-sui-cli).
-  This way, if you are a Sui developer, 
-  you basically don't need to change your workflow to deploy your application on the Movement network.
+我们建议，你可以考虑配置 Sui CLI 工具，切换到 Movement M2 devnet，进行下面的测试。
 
-## Modify Coin Contracts and Deployment
+* 安装 [Sui CLI](https://docs.sui.io/build/install)。
+* [配置你的 Sui CLI 工具](https://docs.movementlabs.xyz/developers/sui-developers/using-sui-cli)，
+  这样，如果你是一个 Sui 开发者，你基本不需要改变你的工作流程，就可以将你的应用部署到 Movement 网络上。
 
-Change the Coin-related information in `./sources/my_coin.move` to your liking. The main are as follows:
+
+
+## 修改 Coin 合约以及部署
+
+将 `./sources/my_coin.move` 中的 Coin 相关的信息改为你喜欢的样子。主要是以下几个地方：
 
 ```move
     // ...
@@ -61,16 +62,15 @@ Change the Coin-related information in `./sources/my_coin.move` to your liking. 
     // ...
 ```
 
-In the following lines, for the sake of convenience,
-we may directly refer to the "Coin you want to publish" as `MY_COIN` without further explanation, hope you notice this.
+下面行文中，为了方便，我们可能直接将“你想要发布的 Coin”称为 `MY_COIN`，而不再多做解释，希望你注意到这一点。
 
-Publish the modified contract to the Sui network:
+将修改后的合约部署到 Sui 网路：
 
 ```shell
 sui client publish --gas-budget 200000000 --skip-fetch-latest-git-deps --skip-dependency-verification
 ```
 
-If the publishing is successful, the output will be similar to the following:
+部署如果成功，输出信息下面这样：
 
 ```text
 Transaction Digest: 5TobcdrTY35aJupfw1UsaQ2BsJ9bgYc9dQwgXzSNh7aj
@@ -91,18 +91,19 @@ Transaction Digest: 5TobcdrTY35aJupfw1UsaQ2BsJ9bgYc9dQwgXzSNh7aj
 
 ```
 
-Record the ID of the created `TreasuryCap` object in the output (`0x27518522f67c0f8161116a9f93ba3c75a488449ac93876177f7cc5a103b41b82` in the above example).
-It will be used later.
+记录输出中的“已创建（Created）”的 `TreasuryCap` 对象的 ID
+（在上面的例子中是 `0x27518522f67c0f8161116a9f93ba3c75a488449ac93876177f7cc5a103b41b82`），
+后面会用到。
 
-Record the ID of the "Published" package in the output (`0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49` in the above example).
-It will be used later.
+记录输出中的“已发布的（Published）”包的 ID
+（在上面的示例中是 `0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49`），
+后面会用到。
 
+## 给自己 mint 一些 Coin
 
-## Mint yourself some coins
-
-Assuming you want to mint 1 million `MY_COIN` for ourselves,
-you can use the following command (note that replacing the Package ID and the ID of the `TreasuryCap` object,
-`0x27518522f67c0f8161116a9f93ba3c75a488449ac93876177f7cc5a103b41b82`, to the actual values you got when you publish the contract):
+假设我们想要给自己 mint 100 万个 `MY_COIN`，我们可以使用下面的命令
+（注意将 Package ID 以及 `TreasuryCap` 对象的 ID 的值 
+`0x27518522f67c0f8161116a9f93ba3c75a488449ac93876177f7cc5a103b41b82` 替换为你发布合约时得到的实际的值）：
 
 ```shell
 sui client call --package 0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49 \
@@ -112,7 +113,7 @@ sui client call --package 0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c
 --gas-budget 20000000
 ```
 
-If mint succeeds, the output looks like this:
+如果 mint 成功，输出类似下面这样：
 
 ```text
 
@@ -128,32 +129,30 @@ If mint succeeds, the output looks like this:
 
 ```
 
-Record the ID of the created `Coin` object in the output.
-(`0x4f8f7415357f31da4df9e713084d72ef1fb455186824db9df7b5bb5fa42f84d1` in the above example).
-It will be used later.
+记录输出中的“已创建（Created）”的 `Coin` 对象的 ID，
+（在上面的示例中是 `0x4f8f7415357f31da4df9e713084d72ef1fb455186824db9df7b5bb5fa42f84d1`），
+后面会用到。
 
+### 查看你拥有哪些 `MY_COIN` 对象
 
-### See which `MY_COIN` objects you own
-
-You can also view what `MY_COIN` objects you own by using the following command:
+你也可以事后使用下面的命令查看你拥有的 `MY_COIN` 对象：
 
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"suix_getCoins","params":["{YOUR_ADDRESS}","{MY_COIN_PACKAGE_ID}::my_coin::MY_COIN"]}' https://sui.devnet.m2.movementlabs.xyz
 ```
 
-## Creating token pairs and initializing liquidity in Flex DEX
+## 在 Flex DEX 中提供交易对并初始化流动性
 
-Below we show how to create a token pair and initialize liquidity in the Flex DEX, 
-using the Flex DEX contract deployed on the Movement M2 devnet network.
-Of course, you will need to first publish the `MY_COIN` contract on the Movement M2 devnet as described above.
+下面我们以 Flex DEX 部署在 Movement M2 devnet 网络上的合约为例，展示如何在 Flex DEX 中提供交易对并初始化流动性。
+当然，你需要先按照上面的步骤将 `MY_COIN` 合约部署到 Movement M2 devnet。
 
-Take a look at your Sui CLI wallet to see how many gas coin objects of the current network you own:
+然后，看看你的 Sui CLI 钱包中有多少当前网络的“本币”对象：
 
 ```shell
 sui client gas
 ```
 
-The output is similar to the following:
+输出类似下面这样：
 
 ```text
 ╭────────────────────────────────────────────────────────────────────┬────────────────────┬──────────────────╮
@@ -163,38 +162,31 @@ The output is similar to the following:
 │ 0x4130234b30141d0003f0f005c1e28b231dfc8a5653e4641b5e3b88ec4e61a829 │ 200000000          │ 0.20             │
 ```
 
-Records the ID of one of the coin objects, which will be used later.
+记录其中的一个 coin 对象的 ID，后面会用到。
 
 ---
 
-Tip: If less than one object is returned,
-you can split one coin object into two by transferring some amount to your Sui CLI wallet account.
-You can execute the transfer command like this (note that replace the placeholders `{YOUR_ADDRESS}` and `{YOUR_COIN_OBJECT_ID}` with your actual values ):
+提示：如果返回的对象少于一个，你可以给自己的 Sui CLI 钱包账户转一些 coin，已达到将一个 coin 对象 split 为两个的目的。
+你可以这样执行转账命令，（注意将占位符 `{YOUR_ADDRESS}` 和 `{YOUR_COIN_OBJECT_ID}` 替换为你实际的值）：
 
 ```shell
 sui client pay-sui --amounts 200000000 --recipients {YOUR_ADDRESS} --gas-budget 10000000 \
 --input-coins {YOUR_COIN_OBJECT_ID}
 ```
 
-By the way, you can check the address of your Sui CLI wallet account using the following command:
-
-```shell
-sui client active-address
-```
-
 ---
 
-Now, you can use the following command to create a token pair and initialize liquidity in the Flex DEX.
-In the following example command, we have assumed the values of the following parameters (you will need to replace them with the actual values):
+现在，可以使用下面的命令在 Flex DEX 中创建交易对并初始化流动性了。
+在下面的示例命令中，我们假设了以下几个参数的值（你需要将它们替换为实际的值）：
 
-* The contract package ID of the Flex DEX is `0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd`;
-* The type of `MY_COIN` is `0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49::my_coin::MY_COIN`;
-* Your Sui CLI wallet own a gas coin object with ID `0x4130234b30141d0003f0f005c1e28b231dfc8a5653e4641b5e3b88ec4e61a829`;
-* The ID of the `MY_COIN` object owned by your Sui CLI wallet is `0x4f8f7415357f31da4df9e713084d72ef1fb455186824db9df7b5bb5fa42f84d1`;
-* The initialized liquidity you want to provide is 0.1 gas coin of the network and 1 `MY_COIN`.
-* The fee rate for the token pair (the "pool") is 3 thousandths (0.3%).
+* Flex DEX 的合约包 ID 为 `0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd`；
+* 你的 Coin 的类型为 `0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49::my_coin::MY_COIN`；
+* 你的 Sui CLI 钱包拥有的“本币”对象的 ID 为 `0x4130234b30141d0003f0f005c1e28b231dfc8a5653e4641b5e3b88ec4e61a829`；
+* 你的 Sui CLI 钱包拥有的 `MY_COIN` 对象的 ID 为 `0x4f8f7415357f31da4df9e713084d72ef1fb455186824db9df7b5bb5fa42f84d1`；
+* 你想要提供的初始化流动性为 0.1 个网络“本币”和 1 个 `MY_COIN`。
+* “池子”的手续费率为 3/1000。
 
-Execute the following command:
+执行：
 
 ```shell
 sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd \
@@ -210,7 +202,7 @@ sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34
 --gas-budget 30000000
 ```
 
-If it is successful, the output looks similar to the following:
+如果执行成功，输出类似下面这样：
 
 ```text
 ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
@@ -243,8 +235,6 @@ If it is successful, the output looks similar to the following:
 │  └──                                                                                                                                                                                                                     │
 
 ```
-
-
 
 在上面的示例中，你创建的交易对（也就是所谓的“池子”）的 ID 是 `0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052`。
 你可以使用 Sui CLI 查看这个“池子”的信息：
