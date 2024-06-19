@@ -2,6 +2,8 @@
 
 English | [中文版](./README_CN.md)
 
+![QRCode of this repo](https://akrd.net/vl1VeM0H-8c2ONAztup3kNakgur0dxgKoMNDmAM8D-M)
+
 In this example, we will demonstrate:
 
 * Modify a simple Coin contract and deploy it on Sui network or on Movement M2 devnet;
@@ -36,6 +38,47 @@ We suggest that you consider configuring the Sui CLI tool to switch to Movement 
   you basically don't need to change your workflow to deploy your application on the Movement network.
 
 
+### Confirm your Sui CLI environment
+
+View the currently active environment of the Sui CLI client:
+
+```shell
+sui client envs
+```
+
+The output should be similar to the following:
+
+```text
+╭───────────┬────────────────────────────────────────────┬────────╮
+│ alias     │ url                                        │ active │
+├───────────┼────────────────────────────────────────────┼────────┤
+│ devnet    │ https://fullnode.devnet.sui.io:443         │        │
+│ testnet   │ https://fullnode.testnet.sui.io:443        │        │
+│ mainnet   │ https://fullnode.mainnet.sui.io:443        │        │
+│ m2-devnet │ https://sui.devnet.m2.movementlabs.xyz:443 │ *      │
+╰───────────┴────────────────────────────────────────────┴────────╯
+```
+
+View currently active Sui CLI wallet address:
+
+```shell
+sui client active-address
+```
+
+The output should be similar to the following:
+
+```text
+0xfc50aa2363f3b3c5d80631cae512ec51a8ba94080500a981f4ae1a2ce4d201c2
+```
+
+See what gas coins are currently in your Sui CLI wallet:
+
+```shell
+sui client gas
+```
+
+If you don't have any coins, you can get some from the Movement M2 devnet faucet:
+https://faucet.movementlabs.xyz/?network=devnet
 
 
 ## Modify Coin Contracts and Deployment
@@ -79,6 +122,16 @@ Publish the modified contract to the Sui network:
 ```shell
 sui client publish --gas-budget 200000000 --skip-fetch-latest-git-deps --skip-dependency-verification
 ```
+
+To speed things up when compile/publish repeatedly, consider use the `--skip-dependency-verification` option.
+Or consider modifying the dependencies in the `Move.toml` file, make use of the local Sui Framework. For example:
+
+```toml
+[dependencies]
+#Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "mainnet" }
+Sui = { local = "../../MystenLabs/sui/crates/sui-framework/packages/sui-framework" }
+```
+
 
 If the publishing is successful, the output will be similar to the following:
 
