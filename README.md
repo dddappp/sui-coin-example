@@ -4,13 +4,13 @@ English | [中文版](./README_CN.md)
 
 In this example, we will demonstrate:
 
-* Modify a simple Coin contract and deploy it on the Sui network;
+* Modify a simple Coin contract and deploy it on Sui network or on Movement M2 devnet;
 * Mint some of this Coin for yourself;
 * Create a token pair of this Coin with other Coin and provide initial liquidity on a decentralized exchange (DEX) called Flex.
 
 --------
 
-Hint: Flex has published their test contract in Movement M2 devnet.
+Hint: Flex has published their test contract on Movement M2 devnet.
 The information of the Exchange object on it is as follows:
 
 ```text
@@ -29,11 +29,13 @@ objectId: 0xa556bc09e966ab42ddcc98b84bc1d26c00cc6438d8dc61a787cfc696200099e7
 
 We suggest that you consider configuring the Sui CLI tool to switch to Movement M2 devnet for the following tests.
 
-* Install [Sui CLI](https://docs.sui.io/build/install)。
+* Install [Git](https://git-scm.com/downloads).
+* Install [Sui CLI](https://docs.sui.io/build/install).
 * [Configure your Sui CLI](https://docs.movementlabs.xyz/developers/sui-developers/using-sui-cli).
   This way, if you are a Sui developer, 
   you basically don't need to change your workflow to deploy your application on the Movement network.
-* Install [Git](https://git-scm.com/downloads).
+
+
 
 
 ## Modify Coin Contracts and Deployment
@@ -44,13 +46,13 @@ First, clone the example coin repository:
 git clone https://github.com/dddappp/sui-coin-example.git
 ```
 
-Change the Coin-related information in `./sources/my_coin.move` to your liking. The main are as follows:
+Change the coin metadata in `./sources/my_coin.move` to your liking. The main are as follows:
 
 ```move
     // ...
-    const COIN_DECIMALS: u8 = 9; // The number of decimal places for the coin
-
-    /// Name of the coin
+    const COIN_DECIMALS: u8 = 9; // The number of decimal places of the coin
+    
+    // The coin type.
     struct MY_COIN has drop {}
 
     fun init(otw: MY_COIN, ctx: &mut TxContext) {
@@ -143,9 +145,13 @@ It will be used later.
 
 ### View `MY_COIN` objects you own
 
-You can also view what `MY_COIN` objects you own by using the following command:
+You can also view what `MY_COIN` objects you own by using the following command
+(注意替换占位符 `{YOUR_ADDRESS}` 和 `{MY_COIN_PACKAGE_ID}` 为实际值):
 
 ```shell
+# For Movement M2 devnet
+curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"suix_getCoins","params":["{YOUR_ADDRESS}","{MY_COIN_PACKAGE_ID}::my_coin::MY_COIN"]}' https://sui.devnet.m2.movementlabs.xyz
+
 curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"suix_getCoins","params":["{YOUR_ADDRESS}","{MY_COIN_PACKAGE_ID}::my_coin::MY_COIN"]}' https://sui.devnet.m2.movementlabs.xyz
 ```
 
@@ -275,6 +281,16 @@ You will need it if you want to update the fee rate of the pool.
 
 ## Swap gas coin for `MY_COIN`
 
+The parameters of this function are as follows:
+
+* `token_pair`: `&mut TokenPair<X, Y>`. The ID of the token pair object.
+* `x_coin`: `Coin<X>`. Pass the Object ID of the gas coin in the CLI.
+* `x_amount`: `u64`. The amount of gas coin to be swapped in.
+* `y_coin`: `&mut Coin<Y>`. The ID of the `MY_COIN` object to accept the amount swapped out.
+* `expected_y_amount_out`: `u64`. The amount of `MY_COIN` you expect to receive. 
+  If the contract calculates that the amount swapped out is less than this value, 
+  the transaction abort. We'll ignore how to calculate this value here and just pass in a very small value.
+
 Assuming that the object ID of the pool is `0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052`,
 The ID of the gas coin object you own is `0x4130234b30141d0003f0f005c1e28b231dfc8a5653e4641b5e3b88ec4e61a829`.
 The ID of the `MY_COIN` object you are using to receive the amount is `0x4f8f7415357f31da4df9e713084d72ef1fb455186824db9df7b5bb5fa42f84d1`.
@@ -293,6 +309,25 @@ sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34
 '"1"' \
 --gas-budget 30000000
 ```
+
+## Swap `MY_COIN` for gas coin
+
+You can, of course, swap `MY_COIN` for gas coin.
+Execute command this way:
+
+```shell
+sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd --module token_pair_service --function swap_y \
+--type-args '0x2::sui::SUI' \
+0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49::my_coin::MY_COIN \
+--args \
+'0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052' \
+'0x4f8f7415357f31da4df9e713084d72ef1fb455186824db9df7b5bb5fa42f84d1' \
+'"1000000000"' \
+'0x4130234b30141d0003f0f005c1e28b231dfc8a5653e4641b5e3b88ec4e61a829' \
+'"1"' \
+--gas-budget 30000000
+```
+
 
 ## Modifying the fee rate of a token pair
 

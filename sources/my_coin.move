@@ -11,7 +11,7 @@ module coin_example::my_coin {
 
     const COIN_DECIMALS: u8 = 9; // The number of decimal places for the coin
 
-    /// Name of the coin
+    // The coin type. Must be the uppercase of the module name.
     struct MY_COIN has drop {}
 
     /// Register the trusted currency to acquire its `TreasuryCap`. Because

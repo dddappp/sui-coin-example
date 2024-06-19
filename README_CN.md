@@ -256,6 +256,14 @@ sui client object 0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce
 
 ## 以“本币”兑换 `MY_COIN`
 
+该函数的参数如下：
+
+* `token_pair`: `&mut TokenPair<X, Y>`.
+* `x_coin`: `Coin<X>`. 在 CLI 中传入“本币”的 Object ID。
+* `x_amount`: `u64`. 打算兑换（换入）的 X 代币数量。
+* `y_coin`: `&mut Coin<Y>`. 用于接受换出的 Y 代币（`MY_COIN`）的 Coin 对象 Id。
+* `expected_y_amount_out`: `u64`. 你期望获得的 Y 代币的数量。如果合约计算发现实际可获得的 Y 代币数量小于这个值，则交易失败。关于如何计算这个值，我们这里先忽略。
+
 示例命令：
 
 ```shell
