@@ -6,7 +6,7 @@ English | [中文版](./README_CN.md)
 
 In this example, we will demonstrate:
 
-* Modify a simple Coin contract and deploy it on Sui network or on Movement M2 devnet;
+* Modify a simple Coin contract and deploy it on Movement M2 devnet or on Sui testnet;
 * Mint some of this Coin for yourself;
 * Create a token pair of this Coin with other Coin and provide initial liquidity on a decentralized exchange (DEX) called Flex.
 
@@ -103,10 +103,10 @@ Change the coin metadata in `./sources/my_coin.move` to your liking. The main ar
         let (treasury_cap, metadata) = coin::create_currency<MY_COIN>(
             otw,
             COIN_DECIMALS,
-            b"MY_COIN",
-            b"My coin name",
-            b"My coin description",
-            option::none(),
+            b"MY_COIN", // symbol of the coin
+            b"My coin name", // name of the coin
+            b"My coin description", 
+            option::none(), // icon URL
             ctx
         );
         // ...
@@ -154,18 +154,16 @@ Transaction Digest: 5TobcdrTY35aJupfw1UsaQ2BsJ9bgYc9dQwgXzSNh7aj
 
 ```
 
-Record the ID of the created `TreasuryCap` object in the output (`0x27518522f67c0f8161116a9f93ba3c75a488449ac93876177f7cc5a103b41b82` in the above example).
-It will be used later.
-
-Record the ID of the "Published" package in the output (`0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49` in the above example).
-It will be used later.
+Record the ID of the created `TreasuryCap` object in the output (`0x27518522f67c0f8161116a9f93ba3c75a488449ac93876177f7cc5a103b41b82` in the above example),
+and the ID of the "Published" package in the output (`0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49` in the above example),
+as they will be used later.
 
 
 ## Mint yourself some coins
 
-Assuming you want to mint 1 million `MY_COIN` for ourselves,
-you can use the following command (note that replacing the Package ID and the ID of the `TreasuryCap` object,
-`0x27518522f67c0f8161116a9f93ba3c75a488449ac93876177f7cc5a103b41b82`, to the actual values you got when you publish the contract):
+Assuming you want to mint 1 million `MY_COIN` for yourself,
+you can use the following command (note that replacing the Package ID (`0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49`),
+and the ID of the `TreasuryCap` object (`0x27518522f67c0f8161116a9f93ba3c75a488449ac93876177f7cc5a103b41b82`), to the actual values you got when you publish the contract):
 
 ```shell
 sui client call --package 0xa666a577f4b1c4eda0e4113a8ded8fb1002c2fc5f8ce676e097c8e0be9694e49 \
@@ -199,19 +197,20 @@ It will be used later.
 ### View `MY_COIN` objects you own
 
 You can also view what `MY_COIN` objects you own by using the following command
-(注意替换占位符 `{YOUR_ADDRESS}` 和 `{MY_COIN_PACKAGE_ID}` 为实际值):
+(Note that to replace the placeholders `{YOUR_ADDRESS}` and `{MY_COIN_PACKAGE_ID}` with the actual values).
 
 ```shell
 # For Movement M2 devnet
 curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"suix_getCoins","params":["{YOUR_ADDRESS}","{MY_COIN_PACKAGE_ID}::my_coin::MY_COIN"]}' https://sui.devnet.m2.movementlabs.xyz
 
+# For Sui testnet
 curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"suix_getCoins","params":["{YOUR_ADDRESS}","{MY_COIN_PACKAGE_ID}::my_coin::MY_COIN"]}' https://sui.devnet.m2.movementlabs.xyz
 ```
 
 
 ## Creating token pairs and initializing liquidity in Flex DEX
 
-Below we show how to create a token pair and initialize liquidity in the Flex DEX, 
+Below we show how to create a token pair (a "pool") and initialize liquidity in Flex DEX, 
 using the Flex DEX contract deployed on the Movement M2 devnet network.
 Of course, you will need to first publish the `MY_COIN` contract on the Movement M2 devnet as described above.
 
