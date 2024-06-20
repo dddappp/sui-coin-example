@@ -13,9 +13,11 @@ In this example, we will demonstrate:
 --------
 
 Hint: Flex has published their test contract on Movement M2 devnet.
-The information of the Exchange object on it is as follows:
+The information of the contract package ID and the Exchange object ID on it is as follows:
 
 ```text
+PackageID: 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd
+
 ObjectType: 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34ee96a2df44dd::exchange::Exchange
 ObjectID: 0x39a5098d25482d8948f9f1eef3f43cc6ec5b39ddc53c6057af3650a06c5539ea
 ```
@@ -23,6 +25,8 @@ ObjectID: 0x39a5098d25482d8948f9f1eef3f43cc6ec5b39ddc53c6057af3650a06c5539ea
 Information about the test contract that Flex published on Sui testnet:
 
 ```text
+PackageID: 0x1fbb91bd77221cf17450a4378f2d93100cf65725e0099e4da71f62070ce4b729
+
 objectType: 0x1fbb91bd77221cf17450a4378f2d93100cf65725e0099e4da71f62070ce4b729::exchange::Exchange
 objectId: 0xa556bc09e966ab42ddcc98b84bc1d26c00cc6438d8dc61a787cfc696200099e7
 ```
@@ -204,7 +208,7 @@ You can also view what `MY_COIN` objects you own by using the following command
 curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"suix_getCoins","params":["{YOUR_ADDRESS}","{MY_COIN_PACKAGE_ID}::my_coin::MY_COIN"]}' https://sui.devnet.m2.movementlabs.xyz
 
 # For Sui testnet
-curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"suix_getCoins","params":["{YOUR_ADDRESS}","{MY_COIN_PACKAGE_ID}::my_coin::MY_COIN"]}' https://sui.devnet.m2.movementlabs.xyz
+curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"suix_getCoins","params":["{YOUR_ADDRESS}","{MY_COIN_PACKAGE_ID}::my_coin::MY_COIN"]}' https://fullnode.testnet.sui.io
 ```
 
 
