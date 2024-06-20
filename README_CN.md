@@ -279,6 +279,11 @@ sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34
 --gas-budget 30000000
 ```
 
+也许你要问，兑换的用户如果钱包里面没有 `MY_COIN` 对象，那么如何传入 `y_coin` 这个参数呢？
+好问题。此时，作为前端开发者，可以使用 [PTBs](https://docs.sui.io/concepts/transactions/prog-txn-blocks)，
+先[创建一个“零”`MY_COIN` 对象](https://docs.sui.io/references/framework/sui-framework/coin#function-zero)，
+然后将这个对象的引用传入到这个函数中；最后，不要忘记将这个 `MY_COIN` 对象转移到用户的钱包中。
+
 ## 修改交易对的费率
 
 如果你想要修改“池子”的费率，假设池子的对象 ID 是 `0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce8052`，

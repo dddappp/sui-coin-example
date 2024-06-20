@@ -366,6 +366,13 @@ sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34
 --gas-budget 30000000
 ```
 
+Perhaps you're asking, how does a user pass in the `y_coin` parameter if they don't have a `MY_COIN` object inside their wallet?
+Good question. At this point, At this point, if you're a front-end developer, you can use [PTBs](https://docs.sui.io/concepts/transactions/prog-txn-blocks),
+[create a "zero" `MY_COIN` object](https://docs.sui.io/references/framework/sui-framework/coin#function-zero) first.
+Then pass a reference of this object into this function;
+finally, don't forget to transfer this `MY_COIN` object to the user's wallet.
+
+
 ## Swap `MY_COIN` for gas coin
 
 You can, of course, swap `MY_COIN` for gas coin.
