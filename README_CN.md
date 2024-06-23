@@ -262,7 +262,7 @@ sui client object 0x31ee0a05a8a1348da363255e4eb8eeac19a6440f7f33ff7796f1d2e01dce
 * `x_coin`: `Coin<X>`. 在 CLI 中传入“本币”的 Object ID。
 * `x_amount`: `u64`. 打算兑换（换入）的 X 代币数量。
 * `y_coin`: `&mut Coin<Y>`. 用于接受换出的 Y 代币（`MY_COIN`）的 Coin 对象 Id。
-* `expected_y_amount_out`: `u64`. 你期望获得的 Y 代币的数量。如果合约计算发现实际可获得的 Y 代币数量小于这个值，则交易失败。关于如何计算这个值，我们这里先忽略。
+* `expected_y_amount_out`: `u64`. 你能接受的 Y 代币的最小兑出数量。如果合约计算发现实际可获得的 Y 代币数量小于这个值，则交易失败。关于如何计算这个值，我们这里先忽略。
 
 示例命令：
 
@@ -280,9 +280,10 @@ sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34
 ```
 
 也许你要问，兑换的用户如果钱包里面没有 `MY_COIN` 对象，那么如何传入 `y_coin` 这个参数呢？
-好问题。此时，作为前端开发者，可以使用 [PTBs](https://docs.sui.io/concepts/transactions/prog-txn-blocks)，
+好问题。如果你是一名前端开发者，此时可以使用 [PTBs](https://docs.sui.io/concepts/transactions/prog-txn-blocks)，
 先[创建一个“零”`MY_COIN` 对象](https://docs.sui.io/references/framework/sui-framework/coin#function-zero)，
 然后将这个对象的引用传入到这个函数中；最后，不要忘记将这个 `MY_COIN` 对象转移到用户的钱包中。
+
 
 ## 修改交易对的费率
 

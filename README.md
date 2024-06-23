@@ -343,7 +343,7 @@ The parameters of this function are as follows:
 * `x_coin`: `Coin<X>`. Pass the Object ID of the gas coin in the CLI.
 * `x_amount`: `u64`. The amount of gas coin to be swapped in.
 * `y_coin`: `&mut Coin<Y>`. The ID of the `MY_COIN` object to accept the amount swapped out.
-* `expected_y_amount_out`: `u64`. The amount of `MY_COIN` you expect to receive. 
+* `expected_y_amount_out`: `u64`. The minimum amount of `MY_COIN` swapped out you can accept. 
   If the contract calculates that the amount swapped out is less than this value, 
   the transaction abort. We'll ignore how to calculate this value here and just pass in a very small value.
 
@@ -367,7 +367,7 @@ sui client call --package 0x71ec440c694153474dd2a9c5c19cf60e2968d1af51aacfa24e34
 ```
 
 Perhaps you're asking, how does a user pass in the `y_coin` parameter if they don't have a `MY_COIN` object inside their wallet?
-Good question. At this point, At this point, if you're a front-end developer, you can use [PTBs](https://docs.sui.io/concepts/transactions/prog-txn-blocks),
+Good question. At this point, if you're a front-end developer, you can use [PTBs](https://docs.sui.io/concepts/transactions/prog-txn-blocks),
 [create a "zero" `MY_COIN` object](https://docs.sui.io/references/framework/sui-framework/coin#function-zero) first.
 Then pass a reference of this object into this function;
 finally, don't forget to transfer this `MY_COIN` object to the user's wallet.
